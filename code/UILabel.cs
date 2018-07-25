@@ -27,7 +27,7 @@ public class UILabel : UIWidget
         uvsForOnFill.Clear();
         colsForOnFill.Clear();
         NGUIText.Print(text, vertsForOnFill, uvsForOnFill, colsForOnFill);
-        var diff = effectStyle == Effect.None ? 0 : verts.Count - offset;
+        var diff = effectStyle == Effect.None ? 0 : vertsForOnFill.Count - offset;
         if (effectStyle == Effect.Outline)
         {
             diff += 3 * diff;
