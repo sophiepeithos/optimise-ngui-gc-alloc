@@ -87,6 +87,32 @@ namespace Nordeus.DataStructures
 			header->length = originalLength;
 		}
 
+		public unsafe ulong OriginalLength()
+        {
+            void* pBuffer = GetBufferPointer();
+
+            // Get the header
+            ArrayHeader* header = (ArrayHeader*)pBuffer - 1;
+
+            // Change the length
+            return header->length.ToUInt32();
+        }
+
+        public unsafe void AsArrayOfLength(ulong length)
+        {
+            if (length <= 0) return;
+            if (length > (ulong)size) length = (ulong)size;
+
+            void* pBuffer = GetBufferPointer();
+
+            // Get the header
+            ArrayHeader* header = (ArrayHeader*)pBuffer - 1;
+
+            // Change the length
+            UIntPtr originalLength = header->length;
+            header->length = new UIntPtr(length);
+        }
+
 		/// <summary>
 		/// Gets the buffer pointer. This is the only piece of information a subclass needs to provide to this class. The buffer has to
 		/// contain only blittable types, and the compiler prevents unsafe code from operating on generic type arguments, so this method is

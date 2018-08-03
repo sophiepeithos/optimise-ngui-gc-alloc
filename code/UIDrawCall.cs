@@ -114,11 +114,12 @@ public class UIDrawCall : MonoBehaviour
 				if (setIndices)
 				{
 #if OPTIMISE_NGUI_GC_ALLOC
-                    GenerateCachedIndexBuffer(vertexCount, indexCount, a =>
-                    {
-                        mIndices = a;
-                        mMesh.triangles = mIndices;
-                    });
+                    GenerateCachedIndexBuffer(count, indexCount);
+                    var originalLength = mCache.OriginalLength();
+                    mCache.AsArrayOfLength((ulong)indexCount);
+                    mIndices = mCache.buffer;
+                    mMesh.triangles = mIndices;
+                    mCache.AsArrayOfLength(originalLength);
 #else
                     mIndices = GenerateCachedIndexBuffer(vertexCount, indexCount);
 					mMesh.triangles = mIndices;
@@ -194,14 +195,7 @@ public class UIDrawCall : MonoBehaviour
 	List<int[]> mCache = new List<int[]>(maxIndexBufferCache);
 #else
 #if !OPTIMISE_NGUI_GC_ALLOC
-    static List<int[]> mCache = new List<int[]>(maxIndexBufferCache);
-#else
-    public static Nordeus.DataStructures.VaryingIntList mCache = new Nordeus.DataStructures.VaryingIntList();
-#endif
-#endif
-
-#if OPTIMISE_NGUI_GC_ALLOC
-    void GenerateCachedIndexBuffer(int vertexCount, int indexCount, Nordeus.DataStructures.VaryingIntList.ArrayAction action)
+    static List<int[]> mCache = new List<int[]>(maxIndexBufferCache);, Nordeus.DataStructures.VaryingIntList.ArrayAction action)
     {
         if (mCache.size < indexCount)
         {
@@ -217,7 +211,6 @@ public class UIDrawCall : MonoBehaviour
                 mCache.Add(i);
             }
         }
-        mCache.AsArrayOfLength(indexCount, action);
     }
 #else
     int[] GenerateCachedIndexBuffer (int vertexCount, int indexCount)
