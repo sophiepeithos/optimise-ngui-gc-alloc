@@ -114,7 +114,7 @@ public class UIDrawCall : MonoBehaviour
 				if (setIndices)
 				{
 #if OPTIMISE_NGUI_GC_ALLOC
-                    GenerateCachedIndexBuffer(count, indexCount);
+                    GenerateCachedIndexBuffer(vertexCount, indexCount);
                     var originalLength = mCache.OriginalLength();
                     mCache.AsArrayOfLength((ulong)indexCount);
                     mIndices = mCache.buffer;
