@@ -1,17 +1,3 @@
-﻿/*
- * ==============================================================================
- * File Name: CachedGeometries.cs
- * Description: 
- * 
- * Version 1.0
- * Create Time: 31/07/2018 11:08
- * 
- * Author: taihe
- * Company: Taihe
- * ==============================================================================
-*/
-
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
