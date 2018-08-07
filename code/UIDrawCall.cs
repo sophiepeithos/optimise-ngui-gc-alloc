@@ -195,7 +195,13 @@ public class UIDrawCall : MonoBehaviour
 	List<int[]> mCache = new List<int[]>(maxIndexBufferCache);
 #else
 #if !OPTIMISE_NGUI_GC_ALLOC
-    static List<int[]> mCache = new List<int[]>(maxIndexBufferCache);, Nordeus.DataStructures.VaryingIntList.ArrayAction action)
+    static List<int[]> mCache = new List<int[]>(maxIndexBufferCache);
+#else
+    public static Nordeus.DataStructures.VaryingIntList mCache = new Nordeus.DataStructures.VaryingIntList();
+#endif
+#endif
+#if OPTIMISE_NGUI_GC_ALLOC
+    void GenerateCachedIndexBuffer(int vertexCount, int indexCount)
     {
         if (mCache.size < indexCount)
         {
