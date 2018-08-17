@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class CachedGeometries
@@ -27,6 +27,7 @@ public class CachedGeometries
     }
 
     const int SMALL_LIST_COUNT = 10;
+    const int smallListCapacityLimit = 2 << (SMALL_LIST_COUNT - 2);
 
     public static Stack<List<Vector2>>[] cachedListsOfVector2List = new Stack<List<Vector2>>[SMALL_LIST_COUNT];
     public static LinkedList<List<Vector2>> cachedBigListsOfVector2List = new LinkedList<List<Vector2>>();
@@ -42,7 +43,7 @@ public class CachedGeometries
 
     static void PushToCachedGeometries<T>(Stack<List<T>>[] cache, LinkedList<List<T>> bigCache, List<T> source)
     {
-        if (source.Capacity > (int)Mathf.Pow(2, SMALL_LIST_COUNT - 1))
+        if (source.Capacity > smallListCapacityLimit)
         {
             if(bigCache.Count == 0)
             {
@@ -95,7 +96,7 @@ public class CachedGeometries
 
     static void PullFromCachedGeometries<T>(int vertexCount, Stack<List<T>>[] cache, LinkedList<List<T>> bigCache, ref List<T> source)
     {
-        if (vertexCount > (int)Mathf.Pow(2, SMALL_LIST_COUNT - 1))
+        if (vertexCount > smallListCapacityLimit)
         {
             for (var node = bigCache.First; node != null; node = node.Next)
             {
